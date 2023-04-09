@@ -5,7 +5,7 @@
 git clone https://github.com/rafPH1998/teste_wiplay_vuejs
 ```
 
-## Configuraç~pes do projeto
+## Configurações do projeto
 ```
 npm install
 ```
