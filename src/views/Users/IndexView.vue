@@ -78,10 +78,9 @@
   import UserEmpty from '@/components/UserEmpty.vue'
   import PreloaderSpinner from '@/components/PreloaderSpinner.vue'
   import AlertSuccess from '@/components/AlertSuccess.vue'
-  import UserService from '@/services/users.services';
-  import swal from 'sweetalert';
   import { onMounted, ref } from 'vue';
-  
+  import { useStore } from 'vuex';
+
   export default {
     name: 'IndexView',
     components: {
@@ -92,50 +91,30 @@
   
     setup(){
   
-      const users = ref([])
       const showMessageEmpty = ref(false);
       const messageSuccess = ref(false);
       const loading = ref(false);
-  
+
+      const users = ref([]);
+      const store = useStore();
+
+      const getUsers = async () => {
+        try {
+          const response = await store.dispatch('fetchDados');
+          users.value = response.data.data;
+          
+          if (users.value.length == 0) showMessageEmpty.value = true
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
       onMounted(() => {
-  
-        loading.value = true
-        
-        UserService.getAll()
-                .then((response) => {
-
-                    console.log(response)
-                  users.value = response.data.data
-                  
-                  if (users.value.length == 0) showMessageEmpty.value = true
-                })
-                .catch((errror) => {
-                  swal(
-                      "Error!", 
-                      `${errror.message}`, 
-                      "error"
-                  );
-                })
-                .finally(() => {
-                  loading.value = false
-                })
+        getUsers();
       });
-
-      const deleteUser = (id) => {
-        UserService.deleteUser (id)
-            .then((response) => {
-                users.value.splice(users.value.indexOf(users), 1)
-                if (response.status == 204) {
-                  messageSuccess.value = true
-                  setTimeout(() => {
-                      messageSuccess.value = false
-                  }, 4000);
-                } 
-            })
-      }
   
       return {
-        deleteUser,
         users,
         showMessageEmpty,
         messageSuccess,
