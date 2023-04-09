@@ -22,7 +22,7 @@
   
     <table
       v-show="!showMessageEmpty"
-      class="sm:rounded-lg w-5/6 text-sm text-left 
+      class="sm:rounded-lg w-5/6 text-sm text-left mt-10
             text-gray-500 dark:text-gray-400 shadow-2xl 
             bg-gray-900">
         <thead class="text-xs text-white uppercase dark:text-gray-400">
@@ -64,7 +64,7 @@
             <td>
               <a
                 href="#"
-                @click.prevent="deleteClient(user.id)"
+                @click.prevent="deleteUser(user.id)"
                 class="text-red-500">deletar
               </a>
             </td>
@@ -120,9 +120,22 @@
                   loading.value = false
                 })
       });
-  
+
+      const deleteUser = (id) => {
+        UserService.deleteUser (id)
+            .then((response) => {
+                users.value.splice(users.value.indexOf(users), 1)
+                if (response.status == 204) {
+                  messageSuccess.value = true
+                  setTimeout(() => {
+                      messageSuccess.value = false
+                  }, 4000);
+                } 
+            })
+      }
   
       return {
+        deleteUser,
         users,
         showMessageEmpty,
         messageSuccess,

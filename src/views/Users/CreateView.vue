@@ -6,15 +6,15 @@
             class="p-4 mb-4 text-sm text-green-700 
             bg-green-100 dark:bg-green-200 
             dark:text-green-800" role="alert">
-            <span class="font-medium">Sucesso!</span> Novo cliente cadastrado!
+            <span class="font-medium">Sucesso!</span> Novo usuário cadastrado!
         </div>
 
-        <h1 class="text-white ml-9 mt-7">Adicionar um novo cliente</h1>
+        <h1 class="text-white ml-9 mt-7">Adicionar um novo usuário</h1>
         
         <form method="POST" 
             class="px-10 py-10" 
             action="#" 
-            @submit.prevent="addClient">
+            @submit.prevent="storeUser">
             <div class="flex flex-wrap">
                 <div class="w-full">
                     <label for="name" class="leading-7 text-sm text-white">
@@ -53,36 +53,18 @@
                 </div>
 
                 <div class="w-full">
-                    <label for="phone" class="leading-7 text-sm text-white">
-                        Digite o Telefone (opcional)
+                    <label for="age" class="leading-7 text-sm text-white">
+                        Digite sua idade
                     </label>
                     <input type="text" 
                         class="bg-gray-800 appearance-none 
                         rounded w-full py-2 px-3 text-white 
                         leading-tight focus:outline-none 
                         focus:shadow-outline" 
-                        name="phone" id="phone" v-model="users.phone">
+                        name="age" id="age" v-model="users.age">
                     <span 
                         class="text-red-600"
-                        v-for="erro in users.errors.phone" 
-                        :key="erro.id">
-                        {{erro}}
-                    </span>
-                </div>
-
-                <div class="w-full">
-                    <label for="cellphone" class="leading-7 text-sm text-white">
-                        Digite o celular
-                    </label>
-                    <input type="text" 
-                        class="bg-gray-800 appearance-none 
-                        rounded w-full py-2 px-3 text-white 
-                        leading-tight focus:outline-none 
-                        focus:shadow-outline" 
-                        name="cellphone" id="cellphone" v-model="users.cellphone">
-                    <span 
-                        class="text-red-600"
-                        v-for="erro in users.errors.cellphone" 
+                        v-for="erro in users.errors.age" 
                         :key="erro.id">
                         {{erro}}
                     </span>
@@ -118,24 +100,22 @@ export default {
         const users = reactive ({
             name: '',
             email: '',
-            phone: '',
-            cellphone: '',
+            age: '',
             errors: '',
             showMsgSuccess: false,
             loading: false
         })
 
-        const addClient = () => {
+        const storeUser = () => {
             users.loading = true
 
-            UserService.storeClient({...users})
+            UserService.storeUser({...users})
                         .then((response) => {
                             if (response.status == 201) {
                                 users.showMsgSuccess = true
                                 users.name = ''
                                 users.email = ''
-                                users.phone = ''
-                                users.cellphone = ''
+                                users.age = ''
                                 users.errors = ''
                                 
                                 setTimeout(() => {
@@ -150,7 +130,7 @@ export default {
         }
 
         return {
-            addClient,
+            storeUser,
             users
         }
     }
