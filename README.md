@@ -1,23 +1,23 @@
 # testewiplay
 
-## Project setup
+### Clone o repositório
+```
+git clone https://github.com/rafPH1998/teste_wiplay_vuejs
+```
+
+## Configuraç~pes do projeto
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compila e faz hot-reloads para desenvolvimento
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compila e minifica para produção
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration
