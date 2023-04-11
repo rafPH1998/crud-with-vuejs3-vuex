@@ -10,6 +10,10 @@ const mutations = {
     state.users = [];
   },
 
+  STORE_USER(state, payload) {
+    state.users = payload;
+  },
+
   DELETE_USER(state, userId) {
     state.users = state.users.filter((user) => user.id !== userId);
   }
@@ -23,8 +27,14 @@ const actions = {
   },
 
   async deleteUser({ commit }, userId) {
-    const response = await UserService.deleteUser(userId);
+    const response = await UserService.storeUser(userId);
     commit('DELETE_USER', userId);
+    return response;
+  },
+
+  async storeUser({ commit }, data) {
+    const response = await UserService.storeUser(data);
+    commit('STORE_USER', data);
     return response;
   }
 }

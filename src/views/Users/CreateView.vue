@@ -91,12 +91,16 @@
 </template>
   
 <script>
-import UserService from '@/services/users.services';
+
 import { reactive } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     name: 'CreateView',
+
     setup() {
+
+        const store = useStore();
         const users = reactive ({
             name: '',
             email: '',
@@ -106,27 +110,31 @@ export default {
             loading: false
         })
 
-        const storeUser = () => {
+        const storeUser = async () => {
+            
             users.loading = true
 
-            UserService.storeUser({...users})
-                        .then((response) => {
-                            if (response.status == 201) {
-                                users.showMsgSuccess = true
-                                users.name = ''
-                                users.email = ''
-                                users.age = ''
-                                users.errors = ''
-                                
-                                setTimeout(() => {
-                                    users.showMsgSuccess = false
-                                }, 4000);
-                            }                     
-                        })
-                        .catch((error) => {
-                            users.errors = error.response.data.errors;
-                        })    
-                        .finally(() => users.loading = false)    
+            try {
+                const response = await store.dispatch('storeUser', users);
+
+                if (response.status == 201) {
+
+                    users.showMsgSuccess = true
+                    users.name = ''
+                    users.email = ''
+                    users.age = ''
+                    users.errors = ''
+                    
+                    setTimeout(() => {
+                        users.showMsgSuccess = false
+                    }, 4000);
+                } 
+
+            } catch (error) {
+                users.errors = error.response.data.errors;
+            } finally {
+                users.loading = false
+            }
         }
 
         return {
