@@ -1,5 +1,3 @@
-# testewiplay
-
 ### Clone o repositório
 ```
 git clone https://github.com/rafPH1998/teste_wiplay_vuejs
